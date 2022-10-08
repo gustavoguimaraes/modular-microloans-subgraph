@@ -6,7 +6,7 @@ dataSources:
     name: PreCommitManager
     network: mumbai
     source:
-      address: "0x9eaddf39133b59642a56f03aa3069806e021802f"
+      address: '0xA170153E5e0D2d8cE36e6a77b57238B9023f2474'
       abi: PreCommitManager
     mapping:
       kind: ethereum/events

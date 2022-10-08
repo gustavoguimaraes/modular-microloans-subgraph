@@ -113,8 +113,12 @@ export class ProjectCreated__Params {
     return this._event.parameters[0].value.toBigInt();
   }
 
-  get creator(): Address {
+  get asset(): Address {
     return this._event.parameters[1].value.toAddress();
+  }
+
+  get creator(): Address {
+    return this._event.parameters[2].value.toAddress();
   }
 }
 
