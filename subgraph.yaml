@@ -1,4 +1,4 @@
-specVersion: 0.0.1
+specVersion: 0.0.2
 schema:
   file: ./schema.graphql
 dataSources:
@@ -13,12 +13,8 @@ dataSources:
       apiVersion: 0.0.5
       language: wasm/assemblyscript
       entities:
-        - CommitCreated
-        - CommitWithdrawn
-        - FundsRedeemedForProject
-        - ProjectCreated
-        - RedeemFailed
-        - RedeemSucceeded
+        - Project
+        - Commit
       abis:
         - name: PreCommitManager
           file: ./abis/PreCommitManager.json

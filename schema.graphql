@@ -12,7 +12,7 @@ type Project @entity {
 
 type Commit @entity {
   id: ID!
-  project: ID!
+  project: Project!
   committer: String!
   amount: BigInt!
   expiry: BigInt!

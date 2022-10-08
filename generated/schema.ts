@@ -12,31 +12,35 @@ import {
   BigDecimal
 } from "@graphprotocol/graph-ts";
 
-export class ExampleEntity extends Entity {
+export class Project extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
 
-    this.set("count", Value.fromBigInt(BigInt.zero()));
-    this.set("commitId", Value.fromBigInt(BigInt.zero()));
-    this.set("projectId", Value.fromBigInt(BigInt.zero()));
+    this.set("receiver", Value.fromString(""));
+    this.set("asset", Value.fromString(""));
+    this.set("numCommits", Value.fromBigInt(BigInt.zero()));
+    this.set("amountCommitted", Value.fromBigInt(BigInt.zero()));
+    this.set("numRedeemed", Value.fromBigInt(BigInt.zero()));
+    this.set("amountRedeemed", Value.fromBigInt(BigInt.zero()));
+    this.set("createdAt", Value.fromBigInt(BigInt.zero()));
   }
 
   save(): void {
     let id = this.get("id");
-    assert(id != null, "Cannot save ExampleEntity entity without an ID");
+    assert(id != null, "Cannot save Project entity without an ID");
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save ExampleEntity entity with non-string ID. " +
+        "Cannot save Project entity with non-string ID. " +
           'Considering using .toHex() to convert the "id" to a string.'
       );
-      store.set("ExampleEntity", id.toString(), this);
+      store.set("Project", id.toString(), this);
     }
   }
 
-  static load(id: string): ExampleEntity | null {
-    return changetype<ExampleEntity | null>(store.get("ExampleEntity", id));
+  static load(id: string): Project | null {
+    return changetype<Project | null>(store.get("Project", id));
   }
 
   get id(): string {
@@ -48,30 +52,179 @@ export class ExampleEntity extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get count(): BigInt {
-    let value = this.get("count");
+  get receiver(): string {
+    let value = this.get("receiver");
+    return value!.toString();
+  }
+
+  set receiver(value: string) {
+    this.set("receiver", Value.fromString(value));
+  }
+
+  get asset(): string {
+    let value = this.get("asset");
+    return value!.toString();
+  }
+
+  set asset(value: string) {
+    this.set("asset", Value.fromString(value));
+  }
+
+  get numCommits(): BigInt {
+    let value = this.get("numCommits");
     return value!.toBigInt();
   }
 
-  set count(value: BigInt) {
-    this.set("count", Value.fromBigInt(value));
+  set numCommits(value: BigInt) {
+    this.set("numCommits", Value.fromBigInt(value));
   }
 
-  get commitId(): BigInt {
-    let value = this.get("commitId");
+  get amountCommitted(): BigInt {
+    let value = this.get("amountCommitted");
     return value!.toBigInt();
   }
 
-  set commitId(value: BigInt) {
-    this.set("commitId", Value.fromBigInt(value));
+  set amountCommitted(value: BigInt) {
+    this.set("amountCommitted", Value.fromBigInt(value));
   }
 
-  get projectId(): BigInt {
-    let value = this.get("projectId");
+  get numRedeemed(): BigInt {
+    let value = this.get("numRedeemed");
     return value!.toBigInt();
   }
 
-  set projectId(value: BigInt) {
-    this.set("projectId", Value.fromBigInt(value));
+  set numRedeemed(value: BigInt) {
+    this.set("numRedeemed", Value.fromBigInt(value));
+  }
+
+  get amountRedeemed(): BigInt {
+    let value = this.get("amountRedeemed");
+    return value!.toBigInt();
+  }
+
+  set amountRedeemed(value: BigInt) {
+    this.set("amountRedeemed", Value.fromBigInt(value));
+  }
+
+  get createdAt(): BigInt {
+    let value = this.get("createdAt");
+    return value!.toBigInt();
+  }
+
+  set createdAt(value: BigInt) {
+    this.set("createdAt", Value.fromBigInt(value));
+  }
+
+  get commits(): Array<string> {
+    let value = this.get("commits");
+    return value!.toStringArray();
+  }
+
+  set commits(value: Array<string>) {
+    this.set("commits", Value.fromStringArray(value));
+  }
+}
+
+export class Commit extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("project", Value.fromString(""));
+    this.set("committer", Value.fromString(""));
+    this.set("amount", Value.fromBigInt(BigInt.zero()));
+    this.set("expiry", Value.fromBigInt(BigInt.zero()));
+    this.set("status", Value.fromString(""));
+    this.set("redemptionTime", Value.fromBigInt(BigInt.zero()));
+    this.set("createdAt", Value.fromBigInt(BigInt.zero()));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Commit entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save Commit entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("Commit", id.toString(), this);
+    }
+  }
+
+  static load(id: string): Commit | null {
+    return changetype<Commit | null>(store.get("Commit", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get project(): string {
+    let value = this.get("project");
+    return value!.toString();
+  }
+
+  set project(value: string) {
+    this.set("project", Value.fromString(value));
+  }
+
+  get committer(): string {
+    let value = this.get("committer");
+    return value!.toString();
+  }
+
+  set committer(value: string) {
+    this.set("committer", Value.fromString(value));
+  }
+
+  get amount(): BigInt {
+    let value = this.get("amount");
+    return value!.toBigInt();
+  }
+
+  set amount(value: BigInt) {
+    this.set("amount", Value.fromBigInt(value));
+  }
+
+  get expiry(): BigInt {
+    let value = this.get("expiry");
+    return value!.toBigInt();
+  }
+
+  set expiry(value: BigInt) {
+    this.set("expiry", Value.fromBigInt(value));
+  }
+
+  get status(): string {
+    let value = this.get("status");
+    return value!.toString();
+  }
+
+  set status(value: string) {
+    this.set("status", Value.fromString(value));
+  }
+
+  get redemptionTime(): BigInt {
+    let value = this.get("redemptionTime");
+    return value!.toBigInt();
+  }
+
+  set redemptionTime(value: BigInt) {
+    this.set("redemptionTime", Value.fromBigInt(value));
+  }
+
+  get createdAt(): BigInt {
+    let value = this.get("createdAt");
+    return value!.toBigInt();
+  }
+
+  set createdAt(value: BigInt) {
+    this.set("createdAt", Value.fromBigInt(value));
   }
 }
