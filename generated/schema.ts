@@ -6,7 +6,6 @@ import {
   Value,
   ValueKind,
   store,
-  Address,
   Bytes,
   BigInt,
   BigDecimal
@@ -16,14 +15,6 @@ export class Project extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("receiver", Value.fromString(""));
-    this.set("asset", Value.fromString(""));
-    this.set("numCommits", Value.fromBigInt(BigInt.zero()));
-    this.set("amountCommitted", Value.fromBigInt(BigInt.zero()));
-    this.set("numRedeemed", Value.fromBigInt(BigInt.zero()));
-    this.set("amountRedeemed", Value.fromBigInt(BigInt.zero()));
-    this.set("createdAt", Value.fromBigInt(BigInt.zero()));
   }
 
   save(): void {
@@ -32,8 +23,7 @@ export class Project extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save Project entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
+        `Entities of type Project must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
       store.set("Project", id.toString(), this);
     }
@@ -129,14 +119,6 @@ export class Commit extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
-
-    this.set("project", Value.fromString(""));
-    this.set("committer", Value.fromString(""));
-    this.set("amount", Value.fromBigInt(BigInt.zero()));
-    this.set("expiry", Value.fromBigInt(BigInt.zero()));
-    this.set("status", Value.fromString(""));
-    this.set("redemptionTime", Value.fromBigInt(BigInt.zero()));
-    this.set("createdAt", Value.fromBigInt(BigInt.zero()));
   }
 
   save(): void {
@@ -145,8 +127,7 @@ export class Commit extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        "Cannot save Commit entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
+        `Entities of type Commit must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
       store.set("Commit", id.toString(), this);
     }
