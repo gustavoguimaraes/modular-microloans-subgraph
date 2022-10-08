@@ -1,0 +1,6 @@
+type ExampleEntity @entity {
+  id: ID!
+  count: BigInt!
+  commitId: BigInt! # uint256
+  projectId: BigInt! # uint256
+}
