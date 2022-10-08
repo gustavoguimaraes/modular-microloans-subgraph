@@ -13,7 +13,7 @@ export function handleCommitCreated(event: CommitCreated): void {
   let commit = new Commit(event.params.commitId.toString());
   let project = Project.load(event.params.projectId.toString());
   if (!project) return;
-  project.numCommits = project.numCommits.plus(new BigInt(1));
+  project.numCommits = project.numCommits.plus(BigInt.fromI32(1));
   project.amountCommitted = project.amountCommitted.plus(event.params.amount);
   project.save();
 
