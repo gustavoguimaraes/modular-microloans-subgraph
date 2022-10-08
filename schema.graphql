@@ -1,6 +1,29 @@
-type ExampleEntity @entity {
+type Project @entity {
   id: ID!
-  count: BigInt!
-  commitId: BigInt! # uint256
-  projectId: BigInt! # uint256
+  receiver: String!
+  asset: String!
+  numCommits: BigInt!
+  amountCommitted: BigInt!
+  numRedeemed: BigInt!
+  amountRedeemed: BigInt!
+  createdAt: BigInt!
+  commits: [Commit!]! @derivedFrom(field: "project")
+}
+
+type Commit @entity {
+  id: ID!
+  project: ID!
+  committer: String!
+  amount: BigInt!
+  expiry: BigInt!
+  status: CommitStatus!
+  redemptionTime: BigInt! # O or a real time 
+  createdAt: BigInt!
+}
+
+enum CommitStatus {
+    ACTIVE
+    WITHDRAWN
+    REDEEMED
+    REDEEMED_FAILED # Implies commiters fault: only for case where not enough balance or allowance
 }
