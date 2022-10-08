@@ -51,7 +51,7 @@ export function handleRedeemSucceeded(event: RedeemSucceeded): void {
   let project = Project.load(event.params.projectId.toString());
   if (!project) return;
   project.amountRedeemed = project.amountRedeemed.plus(event.params.amount);
-  project.numRedeemed = project.numRedeemed.plus(new BigInt(1));
+  project.numRedeemed = project.numRedeemed.plus(BigInt.fromI32(1));
   project.save();
 
   let commit = Commit.load(event.params.commitId.toString());
@@ -69,7 +69,7 @@ export function handleRedeemSucceeded(event: RedeemSucceeded): void {
 
   let project = Project.load(commit.project);
   if (!project) return;
-  project.numCommits = project.numCommits.minus((new BigInt(1)));
+  project.numCommits = project.numCommits.minus(BigInt.fromI32(1));
   project.numRedeemed = project.amountCommitted.minus(commit.amount);
   project.save();
  }
