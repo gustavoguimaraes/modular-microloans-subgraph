@@ -8,6 +8,7 @@ dataSources:
     source:
       address: '0xA170153E5e0D2d8cE36e6a77b57238B9023f2474'
       abi: PreCommitManager
+      startBlock: 28500000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
