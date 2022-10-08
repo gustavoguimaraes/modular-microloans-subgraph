@@ -17,13 +17,15 @@ type Commit @entity {
   amount: BigInt!
   expiry: BigInt!
   status: CommitStatus!
-  redemptionTime: BigInt! # O or a real time 
+  redemptionTime: BigInt! # O or a real time
   createdAt: BigInt!
 }
 
 enum CommitStatus {
-    ACTIVE
-    WITHDRAWN
-    REDEEMED
-    REDEEMED_FAILED # Implies commiters fault: only for case where not enough balance or allowance
+  ACTIVE
+  WITHDRAWN
+  REDEEMED
+  REDEEMED_FAILED # Implies commiters fault: only for case where not enough balance or allowance
+  EXPIRED
+  EXPIRY_WARNING
 }

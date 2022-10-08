@@ -31,3 +31,25 @@ dataSources:
         - event: RedeemSucceeded(uint256,uint256,uint256)
           handler: handleRedeemSucceeded
       file: ./src/mapping.ts
+  - kind: ethereum/contract
+    name: CheckExpiration
+    network: mumbai
+    source:
+      address: '0x80F7b90C88A80eE1e60e74Ce0c6207DfcA2E182C'
+      abi: CheckExpiration
+      startBlock: 28500000
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - CheckExpiration
+      abis:
+        - name: CheckExpiration
+          file: ./abis/CheckExpiration.json
+      eventHandlers:
+        - event: CommitExpired(uint256)
+          handler: handleCommitExpired
+        - event: CommitExpiringWarning(uint256)
+          handler: handleCommitExpiringWarning
+      file: ./src/mapping.ts

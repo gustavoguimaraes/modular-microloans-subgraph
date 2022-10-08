@@ -208,30 +208,6 @@ export class PreCommitManager__commitsResult {
     map.set("value5", ethereum.Value.fromUnsignedBigInt(this.value5));
     return map;
   }
-
-  getCommitId(): BigInt {
-    return this.value0;
-  }
-
-  getProjectId(): BigInt {
-    return this.value1;
-  }
-
-  getCommiter(): Address {
-    return this.value2;
-  }
-
-  getErc20Token(): Address {
-    return this.value3;
-  }
-
-  getAmount(): BigInt {
-    return this.value4;
-  }
-
-  getExpiry(): BigInt {
-    return this.value5;
-  }
 }
 
 export class PreCommitManager__projectsResult {
@@ -248,14 +224,6 @@ export class PreCommitManager__projectsResult {
     map.set("value0", ethereum.Value.fromAddress(this.value0));
     map.set("value1", ethereum.Value.fromAddress(this.value1));
     return map;
-  }
-
-  getReceiver(): Address {
-    return this.value0;
-  }
-
-  getAsset(): Address {
-    return this.value1;
   }
 }
 

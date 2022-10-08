@@ -7,7 +7,10 @@ import {
   RedeemSucceeded
 } from "../generated/PreCommitManager/PreCommitManager"
 import { Project, Commit } from "../generated/schema"
-
+import {
+  CommitExpired,
+  CommitExpiringWarning
+} from "../generated/CheckExpiration/CheckExpiration"
 
 export function handleCommitCreated(event: CommitCreated): void {
   let commit = new Commit(event.params.commitId.toString());
@@ -43,25 +46,26 @@ export function handleRedeemFailed(event: RedeemFailed): void {
   let commit = Commit.load(event.params.commitId.toString());
   if (commit === null) return;
   commit.status = "REDEEMED_FAILED";
-  commit.redemptionTime = event.block.timestamp;
   commit.save();
- }
+}
 
 export function handleRedeemSucceeded(event: RedeemSucceeded): void {
-  let project = Project.load(event.params.projectId.toString());
-  if (!project) return;
-  project.amountRedeemed = project.amountRedeemed.plus(event.params.amount);
-  project.numRedeemed = project.numRedeemed.plus(BigInt.fromI32(1));
-  project.save();
-
   let commit = Commit.load(event.params.commitId.toString());
   if (commit === null) return;
   commit.status = "REDEEMED";
   commit.redemptionTime = event.block.timestamp;
   commit.save();
- }
 
- export function handleCommitWithdrawn(event: CommitWithdrawn): void {
+  let project = Project.load(event.params.projectId.toString());
+  if (!project) return;
+  project.amountRedeemed = project.amountRedeemed.plus(event.params.amount);
+  project.numRedeemed = project.numRedeemed.plus(BigInt.fromI32(1));
+  project.numCommits = project.numCommits.minus(BigInt.fromI32(1));
+  project.numRedeemed = project.amountCommitted.minus(commit.amount);
+  project.save();
+}
+
+export function handleCommitWithdrawn(event: CommitWithdrawn): void {
   let commit = Commit.load(event.params.commitId.toString());
   if (commit === null) return;
   commit.status = "WITHDRAWN";
@@ -72,4 +76,24 @@ export function handleRedeemSucceeded(event: RedeemSucceeded): void {
   project.numCommits = project.numCommits.minus(BigInt.fromI32(1));
   project.numRedeemed = project.amountCommitted.minus(commit.amount);
   project.save();
- }
+}
+
+export function handleCommitExpired(event: CommitExpired): void {
+  let commit = Commit.load(event.params.commitId.toString());
+  if (commit === null) return;
+  commit.status = "EXPIRED";
+  commit.save();
+
+  let project = Project.load(commit.project);
+  if (!project) return;
+  project.numCommits = project.numCommits.minus(BigInt.fromI32(1));
+  project.numRedeemed = project.amountCommitted.minus(commit.amount);
+  project.save();
+}
+
+export function handleCommitExpiringWarning(event: CommitExpiringWarning): void {
+  let commit = Commit.load(event.params.commitId.toString());
+  if (commit === null) return;
+  commit.status = "EXPIRY_WARNING";
+  commit.save();
+}

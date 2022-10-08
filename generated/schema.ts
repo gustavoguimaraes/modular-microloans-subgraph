@@ -23,7 +23,8 @@ export class Project extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        `Entities of type Project must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+        "Cannot save Project entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
       );
       store.set("Project", id.toString(), this);
     }
@@ -127,7 +128,8 @@ export class Commit extends Entity {
     if (id) {
       assert(
         id.kind == ValueKind.STRING,
-        `Entities of type Commit must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+        "Cannot save Commit entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
       );
       store.set("Commit", id.toString(), this);
     }
