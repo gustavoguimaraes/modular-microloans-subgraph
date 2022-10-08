@@ -8,59 +8,82 @@ import {
   RedeemFailed,
   RedeemSucceeded
 } from "../generated/PreCommitManager/PreCommitManager"
-import { ExampleEntity } from "../generated/schema"
+import { Project, Commit } from "../generated/schema"
 
-export function handleCommitCreated(event: CommitCreated): void {
-  // Entities can be loaded from the store using a string ID; this ID
-  // needs to be unique across all entities of the same type
-  let entity = ExampleEntity.load(event.transaction.from.toHex())
-
-  // Entities only exist after they have been saved to the store;
-  // `null` checks allow to create entities on demand
-  if (!entity) {
-    entity = new ExampleEntity(event.transaction.from.toHex())
-
-    // Entity fields can be set using simple assignments
-    entity.count = BigInt.fromI32(0)
-  }
-
-  // BigInt and BigDecimal math are supported
-  entity.count = entity.count + BigInt.fromI32(1)
-
-  // Entity fields can be set based on event parameters
-  entity.commitId = event.params.commitId
-  entity.projectId = event.params.projectId
-
-  // Entities can be written to the store with `.save()`
-  entity.save()
-
-  // Note: If a handler doesn't require existing field values, it is faster
-  // _not_ to load the entity from the store. Instead, create it fresh with
-  // `new Entity(...)`, set the fields that should be updated and save the
-  // entity back to the store. Fields that were not set or unset remain
-  // unchanged, allowing for partial updates to be applied.
-
-  // It is also possible to access smart contracts from mappings. For
-  // example, the contract that has emitted the event can be connected to
-  // with:
-  //
-  // let contract = Contract.bind(event.address)
-  //
-  // The following functions can then be called on this contract to access
-  // state variables and other data:
-  //
-  // - contract.commits(...)
-  // - contract.projects(...)
+enum CommitStatus {
+  ACTIVE = "ACTIVE",
+  WITHDRAWN = "WITHDRAWN",
+  REDEEMED = "REDEEMED",
+  REDEEMED_FAILED = "REDEEMED_FAILED",
 }
 
-export function handleCommitWithdrawn(event: CommitWithdrawn): void {}
+export function handleCommitCreated(event: CommitCreated): void {
+  const { commitId, projectId, commiter, amount, expiry } = event.params;
+  let commit = new Commit(commitId.toString());
+  let project = Project.load(projectId.toString());
+  if (!project) return;
+  project.numCommits = project.numCommits.plus(new BigInt(1));
+  project.amountCommitted = project.amountCommitted.plus(amount);
+  project.save();
 
-export function handleFundsRedeemedForProject(
-  event: FundsRedeemedForProject
-): void {}
+  commit.project = project.id;
+  commit.committer = commiter.toHex();
+  commit.amount = amount;
+  commit.expiry = expiry;
+  commit.status = CommitStatus.ACTIVE;
+  commit.redemptionTime = new BigInt(0);
+  commit.createdAt = event.block.timestamp;
+  commit.save();
+}
 
-export function handleProjectCreated(event: ProjectCreated): void {}
+export function handleProjectCreated(event: ProjectCreated): void {
+  const { projectId, creator, asset } = event.params;
+  let project = new Project(projectId.toString());
+  project.receiver = creator.toHex();
+  project.asset = asset.toHex();
+  project.numCommits = new BigInt(0);
+  project.amountCommitted = new BigInt(0);
+  project.numRedeemed = new BigInt(0);
+  project.amountRedeemed = new BigInt(0);
+  project.createdAt = event.block.timestamp;
+  project.save();
+}
 
-export function handleRedeemFailed(event: RedeemFailed): void {}
+export function handleRedeemFailed(event: RedeemFailed): void {
+  const {commitId} = event.params;
+  let commit = Commit.load(commitId.toString());
+  if (commit === null) return;
+  commit.status = CommitStatus.REDEEMED_FAILED;
+  commit.redemptionTime = event.block.timestamp;
+  commit.save();
+ }
 
-export function handleRedeemSucceeded(event: RedeemSucceeded): void {}
+export function handleRedeemSucceeded(event: RedeemSucceeded): void {
+  const {commitId, projectId, amount} = event.params;
+  let project = Project.load(projectId.toString());
+  if (!project) return;
+  project.amountRedeemed = project.amountRedeemed.plus(amount);
+  project.numRedeemed = project.numRedeemed.plus(new BigInt(1));
+  project.save();
+
+  let commit = Commit.load(commitId.toString());
+  if (commit === null) return;
+  commit.status = CommitStatus.REDEEMED;
+  commit.redemptionTime = event.block.timestamp;
+  commit.save();
+ }
+
+ export function handleCommitWithdrawn(event: CommitWithdrawn): void {
+  const {commitId} = event.params;
+  let commit = Commit.load(commitId.toString());
+  if (commit === null) return;
+  commit.status = CommitStatus.WITHDRAWN;
+  commit.save();
+
+  let project = Project.load(commit.project);
+  if (!project) return;
+  project.numCommits = project.numCommits.minus((new BigInt(1)));
+  project.numRedeemed = project.amountCommitted.minus(commit.amount);
+  project.save();
+
+ }

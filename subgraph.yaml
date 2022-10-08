@@ -23,9 +23,7 @@ dataSources:
           handler: handleCommitCreated
         - event: CommitWithdrawn(uint256,address)
           handler: handleCommitWithdrawn
-        - event: FundsRedeemedForProject(uint256,address,uint256)
-          handler: handleFundsRedeemedForProject
-        - event: ProjectCreated(uint256,address)
+        - event: ProjectCreated(uint256,address,address)
           handler: handleProjectCreated
         - event: RedeemFailed(uint256,uint256,uint256)
           handler: handleRedeemFailed
