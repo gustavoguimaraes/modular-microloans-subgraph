@@ -1,9 +1,7 @@
 import { BigInt } from "@graphprotocol/graph-ts"
 import {
-  PreCommitManager,
   CommitCreated,
   CommitWithdrawn,
-  FundsRedeemedForProject,
   ProjectCreated,
   RedeemFailed,
   RedeemSucceeded
@@ -85,5 +83,4 @@ export function handleRedeemSucceeded(event: RedeemSucceeded): void {
   project.numCommits = project.numCommits.minus((new BigInt(1)));
   project.numRedeemed = project.amountCommitted.minus(commit.amount);
   project.save();
-
  }
