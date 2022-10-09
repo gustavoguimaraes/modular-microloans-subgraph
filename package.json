@@ -4,7 +4,8 @@
   "scripts": {
     "codegen": "graph codegen",
     "build": "graph build",
-    "deploy": "graph deploy --product hosted-service nhausman1/modular-microloans",
+    "deploy:mumbai": "graph deploy --product hosted-service nhausman1/modular-microloans",
+    "deploy:goerli": "graph deploy --product hosted-service nhausman1/goerli-modular-microloans",
     "create-local": "graph create --node http://localhost:8020/ Modular Microloans",
     "remove-local": "graph remove --node http://localhost:8020/ Modular Microloans",
     "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 Modular Microloans",

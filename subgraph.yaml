@@ -53,3 +53,32 @@ dataSources:
         - event: CommitExpiringWarning(uint256)
           handler: handleCommitExpiringWarning
       file: ./src/mapping.ts
+  - kind: ethereum/contract
+    name: PreCommitManager
+    network: goerli
+    source:
+      address: '0x1550A951Eb4a59cb1a92e231951A63e7C6936057'
+      abi: PreCommitManager
+      startBlock: 7736243
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Project
+        - Commit
+      abis:
+        - name: PreCommitManager
+          file: ./abis/PreCommitManager.json
+      eventHandlers:
+        - event: CommitCreated(uint256,uint256,address,address,uint256,uint256)
+          handler: handleCommitCreated
+        - event: CommitWithdrawn(uint256,address)
+          handler: handleCommitWithdrawn
+        - event: ProjectCreated(uint256,address,address)
+          handler: handleProjectCreated
+        - event: RedeemFailed(uint256,uint256,uint256)
+          handler: handleRedeemFailed
+        - event: RedeemSucceeded(uint256,uint256,uint256)
+          handler: handleRedeemSucceeded
+      file: ./src/mapping.ts
