@@ -1,14 +1,84 @@
 specVersion: 0.0.4
 schema:
   file: ./schema.graphql
+# dataSources:
+#   - kind: ethereum/contract
+#     name: PreCommitManager
+#     network: mumbai
+#     source:
+#       address: '0x8b76563670F37295d8756a4404D69d5BBa7c5dC8'
+#       abi: PreCommitManager
+#       startBlock: 28520000
+#     mapping:
+#       kind: ethereum/events
+#       apiVersion: 0.0.6
+#       language: wasm/assemblyscript
+#       entities:
+#         - Project
+#         - Commit
+#       abis:
+#         - name: PreCommitManager
+#           file: ./abis/PreCommitManager.json
+#       eventHandlers:
+#         - event: CommitCreated(uint256,uint256,address,address,uint256,uint256)
+#           handler: handleCommitCreated
+#         - event: CommitWithdrawn(uint256,address)
+#           handler: handleCommitWithdrawn
+#         - event: ProjectCreated(uint256,address,address)
+#           handler: handleProjectCreated
+#         - event: RedeemFailed(uint256,uint256,uint256)
+#           handler: handleRedeemFailed
+#         - event: RedeemSucceeded(uint256,uint256,uint256)
+#           handler: handleRedeemSucceeded
+#       file: ./src/mapping.ts
+#   - kind: ethereum/contract
+#     name: CheckExpiring
+#     network: mumbai
+#     source:
+#       address: '0xCdFb53d3e72512bCe68E8946143bD354E179E4C0'
+#       abi: CheckExpiring
+#       startBlock: 28520000
+#     mapping:
+#       kind: ethereum/events
+#       apiVersion: 0.0.6
+#       language: wasm/assemblyscript
+#       entities:
+#         - CheckExpiring
+#       abis:
+#         - name: CheckExpiring
+#           file: ./abis/CheckExpiring.json
+#       eventHandlers:
+#         - event: CommitExpiringWarning(uint256)
+#           handler: handleCommitExpiringWarning
+#       file: ./src/mapping.ts
+#   - kind: ethereum/contract
+#     name: CheckExpired
+#     network: mumbai
+#     source:
+#       address: '0xefc91cA3Ee2e37dC918b51885eC103C89E71DF32'
+#       abi: CheckExpired
+#       startBlock: 28520000
+#     mapping:
+#       kind: ethereum/events
+#       apiVersion: 0.0.6
+#       language: wasm/assemblyscript
+#       entities:
+#         - CheckExpired
+#       abis:
+#         - name: CheckExpired
+#           file: ./abis/CheckExpired.json
+#       eventHandlers:
+#         - event: CommitExpired(uint256)
+#           handler: handleCommitExpired
+#       file: ./src/mapping.ts
 dataSources:
   - kind: ethereum/contract
     name: PreCommitManager
-    network: mumbai
+    network: goerli
     source:
-      address: '0x8b76563670F37295d8756a4404D69d5BBa7c5dC8'
+      address: '0x51C4496FBAE0C27282f07eE43bFAB525E1bB2E66'
       abi: PreCommitManager
-      startBlock: 28520000
+      startBlock: 7737424
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -33,11 +103,11 @@ dataSources:
       file: ./src/mapping.ts
   - kind: ethereum/contract
     name: CheckExpiring
-    network: mumbai
+    network: goerli
     source:
-      address: '0xCdFb53d3e72512bCe68E8946143bD354E179E4C0'
+      address: '0x7ab2833BbFC965bDD53e602CE9d48440eb975bF5'
       abi: CheckExpiring
-      startBlock: 28520000
+      startBlock: 7737424
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -53,11 +123,11 @@ dataSources:
       file: ./src/mapping.ts
   - kind: ethereum/contract
     name: CheckExpired
-    network: mumbai
+    network: goerli
     source:
-      address: '0xefc91cA3Ee2e37dC918b51885eC103C89E71DF32'
+      address: '0xEeBb45193594a0D6440b330049F299aF70EEB1F2'
       abi: CheckExpired
-      startBlock: 28520000
+      startBlock: 7737424
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -71,32 +141,3 @@ dataSources:
         - event: CommitExpired(uint256)
           handler: handleCommitExpired
       file: ./src/mapping.ts
-  # - kind: ethereum/contract
-  #   name: PreCommitManager
-  #   network: goerli
-  #   source:
-  #     address: '0x1550A951Eb4a59cb1a92e231951A63e7C6936057'
-  #     abi: PreCommitManager
-  #     startBlock: 7736243
-  #   mapping:
-  #     kind: ethereum/events
-  #     apiVersion: 0.0.6
-  #     language: wasm/assemblyscript
-  #     entities:
-  #       - Project
-  #       - Commit
-  #     abis:
-  #       - name: PreCommitManager
-  #         file: ./abis/PreCommitManager.json
-  #     eventHandlers:
-  #       - event: CommitCreated(uint256,uint256,address,address,uint256,uint256)
-  #         handler: handleCommitCreated
-  #       - event: CommitWithdrawn(uint256,address)
-  #         handler: handleCommitWithdrawn
-  #       - event: ProjectCreated(uint256,address,address)
-  #         handler: handleProjectCreated
-  #       - event: RedeemFailed(uint256,uint256,uint256)
-  #         handler: handleRedeemFailed
-  #       - event: RedeemSucceeded(uint256,uint256,uint256)
-  #         handler: handleRedeemSucceeded
-  #     file: ./src/mapping.ts

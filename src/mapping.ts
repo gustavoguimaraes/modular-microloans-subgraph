@@ -83,12 +83,6 @@ export function handleCommitExpired(event: CommitExpired): void {
   if (commit === null || commit.status == "EXPIRED") return;
   commit.status = "EXPIRED";
   commit.save();
-
-  let project = Project.load(commit.project);
-  if (!project) return;
-  project.numCommits = project.numCommits.minus(BigInt.fromI32(1));
-  project.numRedeemed = project.amountCommitted.minus(commit.amount);
-  project.save();
 }
 
 export function handleCommitExpiringWarning(event: CommitExpiringWarning): void {
