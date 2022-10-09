@@ -61,7 +61,7 @@ export function handleRedeemSucceeded(event: RedeemSucceeded): void {
   project.amountRedeemed = project.amountRedeemed.plus(event.params.amount);
   project.numRedeemed = project.numRedeemed.plus(BigInt.fromI32(1));
   project.numCommits = project.numCommits.minus(BigInt.fromI32(1));
-  project.numRedeemed = project.amountCommitted.minus(commit.amount);
+  project.amountCommitted = project.amountCommitted.minus(commit.amount);
   project.save();
 }
 
