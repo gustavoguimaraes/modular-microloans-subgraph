@@ -80,7 +80,7 @@ export function handleCommitWithdrawn(event: CommitWithdrawn): void {
 
 export function handleCommitExpired(event: CommitExpired): void {
   let commit = Commit.load(event.params.commitId.toString());
-  if (commit === null || commit.status != "EXPIRED") return;
+  if (commit === null || commit.status == "EXPIRED") return;
   commit.status = "EXPIRED";
   commit.save();
 
