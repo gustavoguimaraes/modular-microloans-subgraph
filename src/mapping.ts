@@ -80,16 +80,14 @@ export function handleCommitWithdrawn(event: CommitWithdrawn): void {
 
 export function handleCommitExpired(event: CommitExpired): void {
   let commit = Commit.load(event.params.commitId.toString());
-  if (commit === null) return;
+  if (commit === null || commit.status != "EXPIRED") return;
   commit.status = "EXPIRED";
   commit.save();
 
   let project = Project.load(commit.project);
   if (!project) return;
-  if (commit.status != "EXPIRED") {
-    project.numCommits = project.numCommits.minus(BigInt.fromI32(1));
-    project.numRedeemed = project.amountCommitted.minus(commit.amount);
-  }
+  project.numCommits = project.numCommits.minus(BigInt.fromI32(1));
+  project.numRedeemed = project.amountCommitted.minus(commit.amount);
   project.save();
 }
 
